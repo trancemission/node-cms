@@ -24,6 +24,7 @@ db = mongojs('localhost/cms', ['pages']);
 photosDb = mongojs('localhost/cms', ['photos']);
 jobDb = mongojs('localhost/cms', ['jobs']);
 sessionDb= mongojs('localhost/cms', ['sessions']);
+feedsDb= mongojs('localhost/cms', ['feeds']);
 
 
 // Where to expect image uploads
@@ -104,21 +105,9 @@ app.get('/blog',function(req,res)
 
 app.get('/feeds',function(req, res)
 {
-var request = require('request');
-var fs = require('fs'),
-    xml2js = require('xml2js');
-
-var parser = new xml2js.Parser();
-fs.readFile(__dirname + '/slashdot', function(err, data) {
-    parser.parseString(data, function (err, result) {
-
-        res.send(result);
-console.log(util.inspect(result, false, null))
-        console.log('Done');
+    feedsDb.feeds.find( { src : 'slash'} , { "sort": [['pdate','desc']] } , function(err, feeds) {
+    res.render('feeds.html', {feeds:feeds});
     });
-});
-
-
 });
 
 
