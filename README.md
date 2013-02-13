@@ -13,3 +13,6 @@ Required node modules:
     qs
     util
 
+Install via NPM:
+
+    npm install express mongojs consolidate swig qs util
